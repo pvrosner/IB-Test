@@ -1,0 +1,4 @@
+level,P(fill),n_filled,P(back to extreme | fill),P(stop 100% | fill),avg_R,win_rate,profit_factor,reward_risk_at_fill
+25%,0.88,1189,0.605,0.123,0.019,0.668,1.098,0.333
+50%,0.55,743,0.281,0.266,0.025,0.52,1.074,1.0
+75%,0.291,393,0.099,0.547,-0.057,0.346,0.902,3.0

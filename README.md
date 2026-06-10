@@ -123,6 +123,27 @@ run; 2.0x = symmetric extension below it). ~1 setup per session (n=1,282).
 
 Full study: [`results/cisd_fade_5m/REPORT.md`](results/cisd_fade_5m/REPORT.md).
 
+## Retracement entries after 5m close-through breakouts
+
+`run_retrace.py` measures where close-through breakouts retrace to — on the
+**dealing range** (session extreme-so-far → trailing post-breakout extreme) —
+before resuming in the breakout direction (n=1,351; 94% print a new extreme
+after the breakout bar).
+
+- Before the *first* new extreme, 88% retrace **less than 25%** of the dealing
+  range (median 0%) — immediate continuation is the norm.
+- The deepest pullback absorbed before the day's *last* new extreme is most
+  often in the **25–50% zone** (40% of continuers; median 28%, p75 43%). Only
+  18% of continuing breakouts ever retrace past 50%.
+- Anchored to the breakout impulse leg instead, the median deepest pullback is
+  **60% of the leg** — right at the OTE zone (62–79%).
+- Trailing-limit sims (stop at the 100% level, target the standing extreme):
+  the 25% and 50% levels are mildly positive (PF ~1.1); the **75% level loses**
+  (10% return to the extreme, 55% stop out). Edge concentrates in breakouts
+  before 11:00 (50% level: +0.08R avg); after 12:00 retrace entries go negative.
+
+Full study: [`results/retrace_5m/REPORT.md`](results/retrace_5m/REPORT.md).
+
 ## Layout
 
 ```
