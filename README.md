@@ -104,6 +104,25 @@ entries** (median close-through 0.03R → 0.11R, median breakout time 20 → 30 
 
 Full comparison: [`results/multitf/REPORT.md`](results/multitf/REPORT.md).
 
+## 5m CISD fade with manipulation-leg projections
+
+`run_cisd_fade.py` isolates the fade setup: price raids beyond an IB edge,
+forms an extreme, then closes (5m) through the open of the run-up that made it
+(CISD). Entry at the CISD close, stop at the raid extreme, targets projected
+from the **bodies** of the manipulation leg (1.0x = full body-retrace of the
+run; 2.0x = symmetric extension below it). ~1 setup per session (n=1,282).
+
+- The CISD close itself already sits a median **1.29x** down the projection
+  scale — 0.5x/1.0x are behind the entry by construction; real targets start at 1.5x.
+- Delivery before stop/EOD: **1.5x 82%, 2.0x 68%, 2.5x 55%, 3.0x 45%, 4.0x 32%**
+  (median deepest delivery 2.7x).
+- **Sweep raids (wick beyond the edge, no 5m close through) fade far better than
+  close-through raids**: 2.0x delivery 76% vs 66%, 3.0x 58% vs 43%, and only
+  sweep fades are net positive as fixed-target trades (2.5x target: 61% hit,
+  +0.06R, PF 1.29 vs PF 0.88 for close-through raids).
+
+Full study: [`results/cisd_fade_5m/REPORT.md`](results/cisd_fade_5m/REPORT.md).
+
 ## Layout
 
 ```

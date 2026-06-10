@@ -1,0 +1,16 @@
+,,n,P(1x),P(2x),P(stopped),median max_proj
+raid_depth_b,shallow,428,0.965,0.699,0.591,3.048
+raid_depth_b,medium,427,0.977,0.67,0.604,2.61
+raid_depth_b,deep,427,0.967,0.66,0.485,2.622
+leg_size_b,small leg,428,0.939,0.815,0.715,4.096
+leg_size_b,mid leg,427,0.986,0.705,0.59,2.816
+leg_size_b,big leg,427,0.984,0.508,0.375,2.012
+time_b,before 11:30,470,0.972,0.745,0.677,3.181
+time_b,11:30-13:00,419,0.986,0.659,0.599,2.622
+time_b,after 13:00,393,0.949,0.613,0.379,2.397
+entry_inside_ib,False,509,0.959,0.697,0.568,2.771
+entry_inside_ib,True,773,0.977,0.662,0.555,2.72
+raid_type,close_through,1076,0.971,0.66,0.56,2.632
+raid_type,sweep,206,0.961,0.762,0.558,3.336
+side,long,617,0.971,0.655,0.507,2.581
+side,short,665,0.968,0.696,0.609,2.849
