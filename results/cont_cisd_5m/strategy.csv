@@ -1,0 +1,4 @@
+target,n,P(target),P(stop first),win_rate,avg_R,median_R,profit_factor
+old extreme,640,0.558,0.366,0.594,-0.002,0.15,0.995
+extreme +0.25 DR,640,0.27,0.509,0.427,0.108,-1.0,1.204
+extreme +0.5 DR,640,0.141,0.55,0.383,0.154,-1.0,1.27

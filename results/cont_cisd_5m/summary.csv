@@ -1,0 +1,10 @@
+,0
+setups,640.0
+P(setup | close-through breakout),0.474
+median risk (pts),38.25
+median risk (frac of DR),0.201
+median R available to old extreme,0.64
+median trigger time (min after 10:30),140.0
+median depth at trigger,0.343
+P(stopped before any target),0.366
+median MFE (R),0.82

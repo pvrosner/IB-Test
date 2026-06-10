@@ -144,6 +144,27 @@ after the breakout bar).
 
 Full study: [`results/retrace_5m/REPORT.md`](results/retrace_5m/REPORT.md).
 
+## Continuation CISD in the 25–50% zone
+
+`run_cont_cisd.py` chains the full sequence: close-through breakout → pullback
+whose deepest depth sits in 25–50% of the dealing range (episodes exceeding 50%
+are invalidated until a new extreme resets them) → 5m close back through the
+opens of the retracement leg (continuation CISD) → entry at that close, **stop
+at the CISD-leg low**. 640 setups (47% of close-through breakouts develop it).
+
+- The confirmation works: 56% return to the standing extreme vs 28% for an
+  unconfirmed 50%-limit fill, and only 37% stop out before any target.
+- But the stop placement makes the old extreme a poor target: the CISD close
+  already sits a median 0.64R from the extreme, so that target nets ~0R (PF 1.0).
+- Expectancy lives in the extensions: extreme +0.25 DR averages **+0.11R (PF
+  1.20)** and +0.5 DR **+0.15R (PF 1.27)**, paid for by 2–3R winners. Median MFE
+  is 0.82R, arguing for scale-outs or a trail rather than the old high as target.
+- Conditioning reverses the raw-limit time pattern: setups from breakouts after
+  12:00 are the best (+0.36R at the +0.5 DR target), and deeper triggers
+  (37.5–50%) beat shallow ones.
+
+Full study: [`results/cont_cisd_5m/REPORT.md`](results/cont_cisd_5m/REPORT.md).
+
 ## Layout
 
 ```
