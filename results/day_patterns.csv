@@ -1,0 +1,6 @@
+pattern,prob,n
+up_only,0.419,529
+down_only,0.367,464
+both_down_first,0.093,117
+both_up_first,0.08,101
+none,0.041,52

@@ -1,0 +1,11 @@
+,,ext_0.5,ext_0.5,ext_1.0,ext_1.0,failed,failed,reached_opposite_after,reached_opposite_after
+,,mean,size,mean,size,mean,size,mean,size
+disp_q,fvg_present,,,,,,,,
+Q1_weak,False,0.509,114,0.158,114,0.974,114,0.263,114
+Q1_weak,True,0.554,193,0.197,193,0.912,193,0.202,193
+Q2,False,0.518,85,0.294,85,0.976,85,0.224,85
+Q2,True,0.612,224,0.259,224,0.884,224,0.214,224
+Q3,False,0.41,39,0.179,39,1.0,39,0.333,39
+Q3,True,0.628,258,0.236,258,0.88,258,0.159,258
+Q4_strong,False,0.474,19,0.263,19,1.0,19,0.263,19
+Q4_strong,True,0.62,263,0.27,263,0.829,263,0.141,263

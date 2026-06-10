@@ -1,0 +1,3 @@
+opposite_touched_first,n,ext_0.25,ext_0.5,ext_1.0,ext_1.5,ext_2.0,failed,failed_before_05,cisd,reached_opposite_after,retest,resumed_after_retest,eod_beyond_edge
+False,1164,0.776,0.582,0.236,0.113,0.048,0.897,0.807,0.735,0.197,0.944,0.811,0.565
+True,31,0.903,0.613,0.258,0.129,0.0,0.871,0.677,0.548,0.097,0.935,0.71,0.516

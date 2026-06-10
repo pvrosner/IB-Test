@@ -1,0 +1,6 @@
+,prob,n
+P(CISD | breakout),0.731,1195
+P(reach IB mid | CISD),0.611,873
+P(reach opposite side | CISD),0.266,873
+P(reach opposite side | no CISD),0.0,322
+P(reach opposite side | any breakout),0.194,1195

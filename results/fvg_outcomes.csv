@@ -1,0 +1,8 @@
+,prob,n
+P(FVG forms at breakout),0.785,1195
+P(price revisits FVG | FVG),0.937,938
+P(FVG holds -> 0.5R ext | revisited),0.14,879
+P(reach 1R ext | FVG),0.243,938
+P(reach 1R ext | no FVG),0.214,257
+P(failed | FVG),0.873,938
+P(failed | no FVG),0.981,257

@@ -1,0 +1,15 @@
+,strategy,n,win_rate,avg_R,median_R,total_R,profit_factor
+0,"S1 breakout close (stop mid, tgt 1R ext)",1195,0.455,0.03,-0.239,36.089,1.064
+1,S1 + displacement Q4,282,0.486,0.063,-0.05,17.864,1.148
+2,S1 + FVG present,938,0.489,0.089,-0.051,83.523,1.199
+3,S1 + FVG + disp Q3/Q4,521,0.488,0.08,-0.05,41.864,1.183
+4,S1 early (10:30-12:00),997,0.449,0.034,-0.414,33.748,1.068
+5,S1 + narrow IB (bottom 40%),454,0.434,0.048,-0.934,21.853,1.092
+6,S1 + wide IB (top 40%),494,0.488,0.044,-0.042,21.494,1.106
+7,S2 retest limit at edge (tgt 0.5R ext),1128,0.519,0.037,0.159,41.508,1.086
+8,S2 retest limit at edge (tgt 1R ext),1128,0.428,0.019,-0.459,21.888,1.039
+9,S2 (0.5R) + FVG present,873,0.542,0.072,0.259,62.56,1.176
+10,S2 (0.5R) + displacement Q3/Q4,535,0.523,0.044,0.19,23.566,1.105
+11,S3 CISD fade to opposite edge,869,0.362,-0.018,-1.0,-15.501,0.969
+12,S3 + weak breakout (disp Q1/Q2),464,0.366,0.04,-1.0,18.758,1.069
+13,S3 + early CISD (<60m after breakout),657,0.326,-0.005,-1.0,-3.59,0.992
