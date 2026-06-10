@@ -1,0 +1,9 @@
+,1m,5m,15m
+ext_1.0 | disp Q1_weak,0.182,0.18,0.197
+failed_before_05 | disp Q1_weak,0.863,0.801,0.667
+cisd | disp Q1_weak,0.762,0.588,0.32
+reached_opposite_after | disp Q1_weak,0.225,0.219,0.147
+ext_1.0 | disp Q4_strong,0.27,0.341,0.402
+failed_before_05 | disp Q4_strong,0.695,0.486,0.27
+cisd | disp Q4_strong,0.667,0.396,0.313
+reached_opposite_after | disp Q4_strong,0.149,0.137,0.166

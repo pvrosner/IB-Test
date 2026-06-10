@@ -1,0 +1,6 @@
+,1m,5m,15m
+P(FVG forms),0.785,0.771,0.761
+P(revisited | FVG),0.937,0.882,0.819
+P(holds -> 0.5R | revisited),0.14,0.249,0.376
+P(reach 1R | FVG),0.243,0.278,0.311
+P(reach 1R | no FVG),0.214,0.157,0.138

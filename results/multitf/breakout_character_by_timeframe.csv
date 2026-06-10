@@ -1,0 +1,6 @@
+,1m,5m,15m
+median breakout time (min after 10:30),20.0,25.0,30.0
+median close-through depth (R),0.033,0.065,0.108
+median MFE after breakout (R),0.585,0.613,0.649
+P(FVG at breakout),0.785,0.771,0.761
+median CISD delay (min),20.0,50.0,105.0

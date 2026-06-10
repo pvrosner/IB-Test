@@ -1,0 +1,6 @@
+pattern,1m,5m,15m
+both_down_first,0.093,0.071,0.05
+both_up_first,0.08,0.066,0.056
+down_only,0.367,0.37,0.363
+none,0.041,0.067,0.101
+up_only,0.419,0.426,0.431

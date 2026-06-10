@@ -83,6 +83,27 @@ fades.
 
 See [`results/REPORT.md`](results/REPORT.md) for every table.
 
+## Signal timeframe: 1m vs 5m vs 15m
+
+`run_multitf.py` reruns the identical study with breakouts/displacement/FVG/CISD
+defined on 5m and 15m closes (same 9:30–10:30 IB). Headline: **higher-timeframe
+closes are a meaningful confirmation filter, at the cost of later and deeper
+entries** (median close-through 0.03R → 0.11R, median breakout time 20 → 30 min):
+
+- Failure before +0.5R falls 80% (1m) → 68% (5m) → 50% (15m); CISD rate falls 73% → 33%.
+- A CISD becomes a real reversal signal at 15m: P(reach opposite side | CISD)
+  rises 27% → 45%, and P(reach IB mid | CISD) 61% → 78%.
+- The FVG playbook improves dramatically: revisited gaps hold and extend to
+  +0.5R 14% (1m) → 25% (5m) → 38% (15m) of the time, and FVG presence separates
+  +1R odds 31% vs 14% at 15m (vs 24% vs 21% at 1m).
+- Displacement discriminates far better at 15m: +1R reach is 40% (strongest
+  quartile) vs 20% (weakest); failure before +0.5R 27% vs 67%.
+- Best sims in the study are 15m FVG-confirmed entries: S2 retest + FVG
+  **+0.23R/trade, 62% win, PF 1.70** (n=683); S1 chase + FVG +0.18R, PF 1.57 —
+  despite the conservative same-bar rule penalizing coarser bars hardest.
+
+Full comparison: [`results/multitf/REPORT.md`](results/multitf/REPORT.md).
+
 ## Layout
 
 ```
