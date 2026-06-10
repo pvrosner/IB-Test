@@ -1,0 +1,7 @@
+stop,target,n,P(target),win_rate,avg_R,profit_factor,median_risk_pts
+leg low,old_extreme,927,0.505,0.558,-0.026,0.933,38.0
+leg low,ext_025,927,0.228,0.402,0.046,1.086,38.0
+leg low,ext_05,927,0.111,0.368,0.067,1.119,38.0
+trigger candle,old_extreme,927,0.407,0.444,-0.031,0.941,21.25
+trigger candle,ext_025,927,0.188,0.296,0.112,1.166,21.25
+trigger candle,ext_05,927,0.094,0.261,0.151,1.214,21.25

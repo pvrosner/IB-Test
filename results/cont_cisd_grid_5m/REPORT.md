@@ -1,0 +1,54 @@
+# 5m Continuation CISDs: any depth, leg-low vs trigger-candle stop
+
+3262 triggers across 1107 sessions (1174 first-of-breakout; later triggers come from deeper lows of the same episode or fresh episodes after new extremes). A trigger is valid at any pullback depth provided the retracement never violates the dealing-range origin; once the origin breaks, scanning stops for that breakout.
+
+Median depth at trigger: 0.24; median risk: leg-low stop 27.8 pts, trigger-candle stop 17.2 pts.
+
+## Stop comparison in the original 25-50% zone
+
+| stop           | target      |   n |   P(target) |   win_rate |   avg_R |   profit_factor |   median_risk_pts |
+|:---------------|:------------|----:|------------:|-----------:|--------:|----------------:|------------------:|
+| leg low        | old_extreme | 927 |       0.505 |      0.558 |  -0.026 |           0.933 |             38    |
+| leg low        | ext_025     | 927 |       0.228 |      0.402 |   0.046 |           1.086 |             38    |
+| leg low        | ext_05      | 927 |       0.111 |      0.368 |   0.067 |           1.119 |             38    |
+| trigger candle | old_extreme | 927 |       0.407 |      0.444 |  -0.031 |           0.941 |             21.25 |
+| trigger candle | ext_025     | 927 |       0.188 |      0.296 |   0.112 |           1.166 |             21.25 |
+| trigger candle | ext_05      | 927 |       0.094 |      0.261 |   0.151 |           1.214 |             21.25 |
+
+## Full grid: depth x stop x target
+
+| depth      | stop           | target      |    n |   P(target) |   P(stop first) |   win_rate |   avg_R |   profit_factor |   median_risk_pts |
+|:-----------|:---------------|:------------|-----:|------------:|----------------:|-----------:|--------:|----------------:|------------------:|
+| all depths | leg low        | old_extreme | 3262 |       0.525 |           0.371 |      0.575 |  -0.031 |           0.92  |             27.75 |
+| all depths | leg low        | ext_025     | 3262 |       0.179 |           0.583 |      0.336 |   0.027 |           1.045 |             27.75 |
+| all depths | leg low        | ext_05      | 3262 |       0.078 |           0.606 |      0.311 |   0.039 |           1.061 |             27.75 |
+| all depths | trigger candle | old_extreme | 3262 |       0.45  |           0.49  |      0.483 |  -0.028 |           0.944 |             17.25 |
+| all depths | trigger candle | ext_025     | 3262 |       0.148 |           0.712 |      0.254 |   0.046 |           1.064 |             17.25 |
+| all depths | trigger candle | ext_05      | 3262 |       0.067 |           0.736 |      0.23  |   0.061 |           1.082 |             17.25 |
+| <25%       | leg low        | old_extreme | 1683 |       0.628 |           0.347 |      0.632 |  -0.047 |           0.866 |             19.25 |
+| <25%       | leg low        | ext_025     | 1683 |       0.16  |           0.674 |      0.274 |   0.006 |           1.009 |             19.25 |
+| <25%       | leg low        | ext_05      | 1683 |       0.061 |           0.697 |      0.249 |   0.016 |           1.022 |             19.25 |
+| <25%       | trigger candle | old_extreme | 1683 |       0.558 |           0.425 |      0.56  |  -0.089 |           0.792 |             14.5  |
+| <25%       | trigger candle | ext_025     | 1683 |       0.137 |           0.756 |      0.22  |  -0.033 |           0.957 |             14.5  |
+| <25%       | trigger candle | ext_05      | 1683 |       0.055 |           0.779 |      0.196 |  -0.032 |           0.959 |             14.5  |
+| 25-50%     | leg low        | old_extreme |  927 |       0.505 |           0.375 |      0.558 |  -0.026 |           0.933 |             38    |
+| 25-50%     | leg low        | ext_025     |  927 |       0.228 |           0.501 |      0.402 |   0.046 |           1.086 |             38    |
+| 25-50%     | leg low        | ext_05      |  927 |       0.111 |           0.533 |      0.368 |   0.067 |           1.119 |             38    |
+| 25-50%     | trigger candle | old_extreme |  927 |       0.407 |           0.521 |      0.444 |  -0.031 |           0.941 |             21.25 |
+| 25-50%     | trigger candle | ext_025     |  927 |       0.188 |           0.662 |      0.296 |   0.112 |           1.166 |             21.25 |
+| 25-50%     | trigger candle | ext_05      |  927 |       0.094 |           0.697 |      0.261 |   0.151 |           1.214 |             21.25 |
+| 50-75%     | leg low        | old_extreme |  427 |       0.358 |           0.382 |      0.513 |   0.114 |           1.272 |             43.25 |
+| 50-75%     | leg low        | ext_025     |  427 |       0.192 |           0.426 |      0.445 |   0.171 |           1.363 |             43.25 |
+| 50-75%     | leg low        | ext_05      |  427 |       0.084 |           0.44  |      0.429 |   0.157 |           1.323 |             43.25 |
+| 50-75%     | trigger candle | old_extreme |  427 |       0.283 |           0.576 |      0.391 |   0.276 |           1.473 |             20.25 |
+| 50-75%     | trigger candle | ext_025     |  427 |       0.143 |           0.646 |      0.316 |   0.279 |           1.426 |             20.25 |
+| 50-75%     | trigger candle | ext_05      |  427 |       0.068 |           0.66  |      0.302 |   0.26  |           1.39  |             20.25 |
+| 75-100%    | leg low        | old_extreme |  225 |       0.156 |           0.516 |      0.347 |  -0.202 |           0.638 |             45.25 |
+| 75-100%    | leg low        | ext_025     |  225 |       0.098 |           0.533 |      0.324 |  -0.16  |           0.723 |             45.25 |
+| 75-100%    | leg low        | ext_05      |  225 |       0.053 |           0.538 |      0.32  |  -0.13  |           0.776 |             45.25 |
+| 75-100%    | trigger candle | old_extreme |  225 |       0.138 |           0.684 |      0.249 |  -0.136 |           0.805 |             20.5  |
+| 75-100%    | trigger candle | ext_025     |  225 |       0.08  |           0.716 |      0.218 |  -0.071 |           0.902 |             20.5  |
+| 75-100%    | trigger candle | ext_05      |  225 |       0.044 |           0.716 |      0.218 |   0.004 |           1.006 |             20.5  |
+
+![grid](grid_avg_r.png)
+![depth](depth_hist.png)

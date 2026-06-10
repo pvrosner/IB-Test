@@ -165,6 +165,26 @@ at the CISD-leg low**. 640 setups (47% of close-through breakouts develop it).
 
 Full study: [`results/cont_cisd_5m/REPORT.md`](results/cont_cisd_5m/REPORT.md).
 
+## Continuation CISDs at any depth, two stop placements
+
+`run_cont_cisd_grid.py` widens the zone to **any pullback depth that never
+violates the dealing-range origin** (origin break = structure dead, scanning
+stops) and collects *all* continuation CISDs (3,262 triggers), simulating each
+with two stops: the CISD-leg low and the **trigger-candle low**.
+
+- **The sweet spot is the 50–75% pullback** (n=427): positive at every
+  stop/target combination, best overall is the trigger-candle stop targeting
+  the old extreme — **+0.28R avg, PF 1.47**, with median risk of only ~20 pts.
+- Shallow CISDs (<25% depth, half of all triggers) are noise: negative with
+  both stops. The 75–100% bucket is also negative — too close to full negation.
+- In the original 25–50% zone, the trigger-candle stop roughly halves the risk
+  (38 → 21 pts) and doubles expectancy on extension targets (+0.15R vs +0.07R
+  at +0.5 DR), trading win rate for payoff.
+- Pattern: depth + confirmation + intact origin = the deeper the pullback the
+  market survives (up to ~75%), the better the continuation pays.
+
+Full study: [`results/cont_cisd_grid_5m/REPORT.md`](results/cont_cisd_grid_5m/REPORT.md).
+
 ## Layout
 
 ```
