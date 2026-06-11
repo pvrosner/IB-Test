@@ -1,0 +1,271 @@
+// Range Breakout Failure [Multi-Session]
+// Models the breakout-failure fade: a close outside a user-defined time range,
+// followed by a close back inside the range, triggers a fade signal toward the
+// range interior. Built from the NQ backtest series in this repository.
+//
+// - Up to 4 fully customizable session ranges (times in the timezone input)
+// - Entry mode: signal on the close back inside (default) or on a retest of
+//   the broken level (with optional cancel if the target trades first)
+// - Stop: fixed R to the target (default 1.3:1) or a % projection of the
+//   range beyond the broken level
+// - Projection boxes outside the range (two levels, color/style per level)
+// - Quadrant lines (25/50/75) or midpoint-only, with forward extension;
+//   the extended portion is dotted
+
+//@version=6
+indicator('Range Breakout Failure [Multi-Session]', 'RBF Sessions', overlay = true, max_lines_count = 500, max_boxes_count = 500, max_labels_count = 500)
+
+//---------------------------------------------------------------------------------------------------------------------
+// CONSTANTS
+//---------------------------------------------------------------------------------------------------------------------
+SOLID        = 'Solid'
+DASHED       = 'Dashed'
+DOTTED       = 'Dotted'
+
+ENTRY_CLOSE  = 'Close back inside'
+ENTRY_RETEST = 'Retest of broken level'
+
+TGT_MID      = 'Midpoint (50%)'
+TGT_OPP      = 'Opposite side'
+TGT_Q25      = '25% retrace'
+
+STOP_RR      = 'Fixed R to target'
+STOP_PROJ    = 'Projection % beyond level'
+
+QUAD_FULL    = 'Quadrants (25/50/75)'
+QUAD_MID     = 'Midpoint only'
+QUAD_OFF     = 'Off'
+
+G0 = 'GENERAL'
+G1 = 'RANGE 1'
+G2 = 'RANGE 2'
+G3 = 'RANGE 3'
+G4 = 'RANGE 4'
+GL = 'SIGNAL LOGIC'
+GT = 'TRADE LEVELS'
+GP = 'PROJECTION BOXES'
+GQ = 'QUADRANTS'
+
+//---------------------------------------------------------------------------------------------------------------------
+// INPUTS
+//---------------------------------------------------------------------------------------------------------------------
+tzInput        = input.string('America/New_York', 'Session Timezone', group = G0,
+     tooltip = 'All range times below are interpreted in this timezone.')
+
+r1On   = input.bool(true,        '', group = G1, inline = 'r1')
+r1Sess = input.session('0600-0700', '', group = G1, inline = 'r1')
+r1Col  = input.color(#2962FF,    '', group = G1, inline = 'r1')
+r2On   = input.bool(true,        '', group = G2, inline = 'r2')
+r2Sess = input.session('0700-0800', '', group = G2, inline = 'r2')
+r2Col  = input.color(#089981,    '', group = G2, inline = 'r2')
+r3On   = input.bool(false,       '', group = G3, inline = 'r3')
+r3Sess = input.session('0930-1030', '', group = G3, inline = 'r3')
+r3Col  = input.color(#FF9800,    '', group = G3, inline = 'r3')
+r4On   = input.bool(false,       '', group = G4, inline = 'r4')
+r4Sess = input.session('1500-1600', '', group = G4, inline = 'r4')
+r4Col  = input.color(#9C27B0,    '', group = G4, inline = 'r4')
+
+entryModeInput = input.string(ENTRY_CLOSE, 'Entry Trigger', group = GL, options = [ENTRY_CLOSE, ENTRY_RETEST],
+     tooltip = 'Close back inside: signal fires on the candle that closes back inside the range. Retest: after the close back inside, wait for price to trade back to the broken level.')
+oneSigInput    = input.bool(true,  'Only First Signal Per Side', group = GL)
+cancelInput    = input.bool(true,  'Cancel Retest Entry If Target Trades First', group = GL,
+     tooltip = 'Retest mode only: skip the trade if the target level trades before the retest fills (matches the backtest).')
+
+tgtModeInput   = input.string(TGT_MID, 'Target', group = GT, options = [TGT_MID, TGT_OPP, TGT_Q25])
+stopModeInput  = input.string(STOP_RR, 'Stop Mode', group = GT, options = [STOP_RR, STOP_PROJ])
+rrInput        = input.float(1.3,  'Reward : Risk (fixed-R mode)', group = GT, minval = 0.1, step = 0.1,
+     tooltip = 'Stop distance = target distance / RR. Default 1.3 risks 1 to make 1.3.')
+stopProjInput  = input.float(25,   'Stop Projection % (projection mode)', group = GT, minval = 5, step = 5,
+     tooltip = 'Stop placed this % of the range height beyond the broken level.')
+showTradeInput = input.bool(true,  'Show Entry/Stop/Target Lines', group = GT)
+tradeLenInput  = input.int(20,     'Trade Line Length (bars)', group = GT, minval = 3)
+entColInput    = input.color(#2962FF, 'Entry', group = GT, inline = 'tc')
+stpColInput    = input.color(#F23645, 'Stop',  group = GT, inline = 'tc')
+tgtColInput    = input.color(#089981, 'Target', group = GT, inline = 'tc')
+
+p1OnInput    = input.bool(true,     '', group = GP, inline = 'p1')
+p1PctInput   = input.float(25,      'Projection 1 %', group = GP, inline = 'p1', minval = 5, step = 5)
+p1ColInput   = input.color(color.new(#F23645, 70), '', group = GP, inline = 'p1')
+p1StyInput   = input.string(SOLID,  '', group = GP, inline = 'p1', options = [SOLID, DASHED, DOTTED])
+p2OnInput    = input.bool(false,    '', group = GP, inline = 'p2')
+p2PctInput   = input.float(50,      'Projection 2 %', group = GP, inline = 'p2', minval = 5, step = 5)
+p2ColInput   = input.color(color.new(#FF9800, 70), '', group = GP, inline = 'p2')
+p2StyInput   = input.string(DASHED, '', group = GP, inline = 'p2', options = [SOLID, DASHED, DOTTED])
+
+quadModeInput  = input.string(QUAD_FULL, 'Levels', group = GQ, options = [QUAD_FULL, QUAD_MID, QUAD_OFF])
+quadExtInput   = input.int(20,  'Extend Lines Forward (bars)', group = GQ, minval = 0,
+     tooltip = 'The portion extending beyond the range box is drawn dotted. Projection boxes share this extension.')
+quadColInput   = input.color(color.new(color.gray, 30), 'Line Color', group = GQ, inline = 'q')
+quadWInput     = input.int(1,   'Width', group = GQ, inline = 'q', minval = 1, maxval = 3)
+
+//---------------------------------------------------------------------------------------------------------------------
+// HELPERS
+//---------------------------------------------------------------------------------------------------------------------
+f_lineStyle(string s) =>
+    switch s
+        SOLID  => line.style_solid
+        DASHED => line.style_dashed
+        DOTTED => line.style_dotted
+
+f_targetPx(float d, float hi, float lo) =>
+    // d = +1 faded broken high (short), -1 faded broken low (long)
+    float rng = hi - lo
+    float edge = d > 0 ? hi : lo
+    switch tgtModeInput
+        TGT_MID => (hi + lo) / 2
+        TGT_OPP => d > 0 ? lo : hi
+        => edge - d * 0.25 * rng    // 25% retrace
+
+f_stopPx(float d, float entry, float tp, float hi, float lo) =>
+    float rng = hi - lo
+    float edge = d > 0 ? hi : lo
+    stopModeInput == STOP_RR ?
+         entry + d * math.abs(entry - tp) / rrInput :
+         edge + d * stopProjInput / 100 * rng
+
+f_drawTrade(float d, float entry, float hi, float lo, color col) =>
+    float tp = f_targetPx(d, hi, lo)
+    float sp = f_stopPx(d, entry, tp, hi, lo)
+    if showTradeInput
+        int x2 = bar_index + tradeLenInput
+        line.new(bar_index, entry, x2, entry, color = entColInput, width = 2)
+        line.new(bar_index, sp,    x2, sp,    color = stpColInput, width = 2)
+        line.new(bar_index, tp,    x2, tp,    color = tgtColInput, width = 2)
+        label.new(x2, entry, 'Entry ' + str.tostring(entry, format.mintick), style = label.style_label_left, color = color(na), textcolor = entColInput, size = size.small)
+        label.new(x2, sp,    'Stop ' + str.tostring(sp, format.mintick),    style = label.style_label_left, color = color(na), textcolor = stpColInput, size = size.small)
+        label.new(x2, tp,    'TP '  + str.tostring(tp, format.mintick),    style = label.style_label_left, color = color(na), textcolor = tgtColInput, size = size.small)
+    label.new(bar_index, d > 0 ? high : low, d > 0 ? '▼ fail' : '▲ fail',
+         style = d > 0 ? label.style_label_down : label.style_label_up,
+         color = color.new(col, 20), textcolor = color.white, size = size.small)
+
+f_quadLevels() =>
+    quadModeInput == QUAD_FULL ? array.from(0.25, 0.50, 0.75) :
+         quadModeInput == QUAD_MID ? array.from(0.50) : array.new<float>()
+
+f_drawLevels(float hi, float lo, int x1, int x2, color col) =>
+    float rng = hi - lo
+    int xe = x2 + quadExtInput
+    // quadrant / midpoint lines: solid inside the range box, dotted extension
+    for q in f_quadLevels()
+        float y = hi - q * rng
+        line.new(x1, y, x2, y, color = quadColInput, width = quadWInput, style = line.style_solid)
+        if quadExtInput > 0
+            line.new(x2, y, xe, y, color = quadColInput, width = quadWInput, style = line.style_dotted)
+    // projection boxes beyond both edges
+    if p1OnInput
+        float p = p1PctInput / 100 * rng
+        box.new(x1, hi + p, xe, hi, border_color = p1ColInput, border_style = f_lineStyle(p1StyInput), bgcolor = color.new(p1ColInput, 88))
+        box.new(x1, lo, xe, lo - p, border_color = p1ColInput, border_style = f_lineStyle(p1StyInput), bgcolor = color.new(p1ColInput, 88))
+    if p2OnInput
+        float p = p2PctInput / 100 * rng
+        box.new(x1, hi + p, xe, hi, border_color = p2ColInput, border_style = f_lineStyle(p2StyInput), bgcolor = color.new(p2ColInput, 92))
+        box.new(x1, lo, xe, lo - p, border_color = p2ColInput, border_style = f_lineStyle(p2StyInput), bgcolor = color.new(p2ColInput, 92))
+
+//---------------------------------------------------------------------------------------------------------------------
+// RANGE ENGINE (one instance per session input)
+//---------------------------------------------------------------------------------------------------------------------
+// Side states: 0 idle, 1 closed outside, 2 armed for retest, 3 done
+f_range(bool en, string sess, color col) =>
+    var float hi = na
+    var float lo = na
+    var int   startBar = na
+    var int   endBar = na
+    var bool  building = false
+    var bool  monitoring = false
+    var int   stUp = 0
+    var int   stDn = 0
+    var box   rngBox = na
+
+    bool shortSig = false
+    bool longSig = false
+
+    bool inSess = en and not na(time(timeframe.period, sess, tzInput))
+    bool sessStart = inSess and not inSess[1]
+    bool sessEnd = not inSess and inSess[1]
+
+    if sessStart
+        hi := high
+        lo := low
+        startBar := bar_index
+        building := true
+        monitoring := false
+        stUp := 0
+        stDn := 0
+        rngBox := box.new(bar_index, high, bar_index, low, border_color = col, border_width = 1, bgcolor = color.new(col, 88))
+    else if inSess and building
+        hi := math.max(hi, high)
+        lo := math.min(lo, low)
+        rngBox.set_top(hi)
+        rngBox.set_rightbottom(bar_index, lo)
+
+    if sessEnd and building
+        building := false
+        monitoring := true
+        endBar := bar_index - 1
+        f_drawLevels(hi, lo, startBar, endBar, col)
+
+    if monitoring and not building and not na(hi)
+        bool insideClose = close <= hi and close >= lo
+
+        // ---- broken-high side (fade short) -------------------------------
+        if stUp == 0
+            if close > hi
+                stUp := 1
+        else if stUp == 1
+            if insideClose
+                if entryModeInput == ENTRY_CLOSE
+                    shortSig := true
+                    f_drawTrade(1.0, close, hi, lo, col)
+                    stUp := oneSigInput ? 3 : 0
+                else
+                    stUp := 2
+            else if close < lo
+                stUp := 0
+        else if stUp == 2
+            float tpS = f_targetPx(1.0, hi, lo)
+            if cancelInput and low <= tpS
+                stUp := oneSigInput ? 3 : 0
+            else if high >= hi
+                shortSig := true
+                f_drawTrade(1.0, hi, hi, lo, col)
+                stUp := oneSigInput ? 3 : 0
+
+        // ---- broken-low side (fade long) ----------------------------------
+        if stDn == 0
+            if close < lo
+                stDn := 1
+        else if stDn == 1
+            if insideClose
+                if entryModeInput == ENTRY_CLOSE
+                    longSig := true
+                    f_drawTrade(-1.0, close, hi, lo, col)
+                    stDn := oneSigInput ? 3 : 0
+                else
+                    stDn := 2
+            else if close > hi
+                stDn := 0
+        else if stDn == 2
+            float tpL = f_targetPx(-1.0, hi, lo)
+            if cancelInput and high >= tpL
+                stDn := oneSigInput ? 3 : 0
+            else if low <= lo
+                longSig := true
+                f_drawTrade(-1.0, lo, hi, lo, col)
+                stDn := oneSigInput ? 3 : 0
+
+    [shortSig, longSig]
+
+//---------------------------------------------------------------------------------------------------------------------
+// EXECUTION
+//---------------------------------------------------------------------------------------------------------------------
+[s1, l1] = f_range(r1On, r1Sess, r1Col)
+[s2, l2] = f_range(r2On, r2Sess, r2Col)
+[s3, l3] = f_range(r3On, r3Sess, r3Col)
+[s4, l4] = f_range(r4On, r4Sess, r4Col)
+
+bool anyShort = s1 or s2 or s3 or s4
+bool anyLong  = l1 or l2 or l3 or l4
+
+alertcondition(anyShort, 'Breakout Failure Short', 'Breakout failure: fade signal short')
+alertcondition(anyLong,  'Breakout Failure Long',  'Breakout failure: fade signal long')
+alertcondition(anyShort or anyLong, 'Breakout Failure (any)', 'Breakout failure fade signal')
