@@ -268,6 +268,17 @@ candle-type Markov transition matrix.
 
 Full study: [`results/candle_character/REPORT.md`](results/candle_character/REPORT.md).
 
+### Does the small-candle filter improve actual trades? No — it inverts.
+
+`run_small_candle_filter.py` joins candle character with the real fade trades.
+Small-candle trades are flat (the cancel rule removes the fast easy reversions
+and the tiny stops get wicked), while the strongest cells are **failure-model
+fades of LARGE candles** with the penetration filter: rr1.3-to-mid on large
+candles earns +0.41R (PF 2.07, n=83; 7am-only +0.61R, PF 3.0, n=43 — small
+sample). Event probability and tradeable edge are not the same thing.
+
+Full study: [`results/small_candle_filter/REPORT.md`](results/small_candle_filter/REPORT.md).
+
 ## Layout
 
 ```
