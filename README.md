@@ -185,6 +185,27 @@ with two stops: the CISD-leg low and the **trigger-candle low**.
 
 Full study: [`results/cont_cisd_grid_5m/REPORT.md`](results/cont_cisd_grid_5m/REPORT.md).
 
+## Hourly-range fade models (6–7am / 7–8am candles, 1m entries)
+
+`run_hourly_range.py` tests the Mc5calpAfee-style mean-reversion models: fade a
+break of the 6am or 7am ET hourly candle back to the range midpoint at 1.3:1
+reward:risk, entering on the retest (Breakout/Retest: close outside → close
+back inside → retest; Breakout Failure: first breaking bar wicks out → retest),
+skipping the trade if the midpoint trades before the retest. 3,588 pre-9:30
+fills over 5 years.
+
+- **Every model/range combo is breakeven-to-negative before costs**: win rates
+  40.4–43.3% vs the 43.5% needed at 1.3:1 (avg R −0.004 to −0.072, PF 0.88–0.99).
+- The failure model beats the retest model on the 6am range; the 7am range
+  beats the 6am range. Best cell: 7am failure longs (+0.03R, n=307) — within
+  noise of zero.
+- Breakeven-after-25% management only helps the 7am retest (+0.018R, PF 1.05);
+  it hurts everything else. Allowing fills after 9:30 makes all combos worse.
+- Median stop is only 12–14 NQ points, so ~1 pt of round-trip cost ≈ 7% of
+  risk per trade — comfortably wiping out even the best cells.
+
+Full study: [`results/hourly_range_1m/REPORT.md`](results/hourly_range_1m/REPORT.md).
+
 ## Layout
 
 ```

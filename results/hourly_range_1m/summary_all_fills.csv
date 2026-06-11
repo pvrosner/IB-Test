@@ -1,0 +1,5 @@
+range_name,model,n,win_rate,loss_rate,eod_rate,avg_R,total_R,profit_factor,median_stop_pts,median_mins_to_exit
+6am,failure,859.0,0.411,0.587,0.002,-0.054,-46.004,0.909,12.885,10.0
+6am,retest,1675.0,0.398,0.599,0.002,-0.082,-137.11,0.864,13.269,10.0
+7am,failure,855.0,0.423,0.571,0.006,-0.02,-17.267,0.965,14.615,8.0
+7am,retest,1548.0,0.422,0.574,0.004,-0.025,-38.964,0.956,15.192,7.0
