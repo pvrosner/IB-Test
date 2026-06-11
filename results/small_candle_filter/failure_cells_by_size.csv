@@ -1,0 +1,19 @@
+scope,config,size,n,win_rate,avg_R,profit_factor
+7am only,rr1.3->mid,small,49,0.388,-0.108,0.823
+7am only,rr1.3->mid,mid,46,0.37,-0.15,0.762
+7am only,rr1.3->mid,large,43,0.698,0.605,3.0
+7am only,extreme 50@1R/50@2R,small,49,0.531,0.0,1.0
+7am only,extreme 50@1R/50@2R,mid,46,0.63,0.25,1.676
+7am only,extreme 50@1R/50@2R,large,43,0.628,0.314,1.844
+7am only,proj25->opp,small,49,0.204,0.02,1.026
+7am only,proj25->opp,mid,46,0.174,-0.13,0.842
+7am only,proj25->opp,large,43,0.349,0.744,2.143
+both ranges,rr1.3->mid,small,103,0.456,0.05,1.091
+both ranges,rr1.3->mid,mid,93,0.344,-0.209,0.682
+both ranges,rr1.3->mid,large,83,0.614,0.413,2.072
+both ranges,extreme 50@1R/50@2R,small,103,0.495,-0.015,0.971
+both ranges,extreme 50@1R/50@2R,mid,93,0.538,0.097,1.209
+both ranges,extreme 50@1R/50@2R,large,83,0.566,0.139,1.319
+both ranges,proj25->opp,small,103,0.223,0.117,1.15
+both ranges,proj25->opp,mid,93,0.14,-0.301,0.65
+both ranges,proj25->opp,large,83,0.289,0.446,1.627

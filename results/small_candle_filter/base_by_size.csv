@@ -1,0 +1,13 @@
+range,model,size,n,win_rate,avg_R,total_R,profit_factor
+6am,failure,small,250,0.452,0.04,9.9,1.072
+6am,failure,mid,219,0.37,-0.149,-32.7,0.763
+6am,failure,large,227,0.458,0.054,12.2,1.099
+6am,retest,small,404,0.421,-0.032,-13.0,0.944
+6am,retest,mid,436,0.401,-0.077,-33.5,0.872
+6am,retest,large,426,0.387,-0.109,-46.5,0.822
+7am,failure,small,220,0.414,-0.049,-10.7,0.917
+7am,failure,mid,204,0.392,-0.098,-20.0,0.839
+7am,failure,large,197,0.497,0.144,28.4,1.287
+7am,retest,small,312,0.442,0.017,5.4,1.031
+7am,retest,mid,328,0.399,-0.081,-26.7,0.864
+7am,retest,large,335,0.454,0.044,14.6,1.08

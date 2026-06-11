@@ -1,0 +1,13 @@
+year,cell,count,mean,sum
+2021,"small candles, base model (rr1.3->mid)",184,0.038,6.9
+2022,"small candles, base model (rr1.3->mid)",197,0.004,0.8
+2023,"small candles, base model (rr1.3->mid)",243,0.032,7.7
+2024,"small candles, base model (rr1.3->mid)",232,-0.078,-18.1
+2025,"small candles, base model (rr1.3->mid)",257,0.02,5.2
+2026,"small candles, base model (rr1.3->mid)",73,-0.149,-10.9
+2021,"small candles, extreme 50@1R/50@2R",184,-0.035,-6.5
+2022,"small candles, extreme 50@1R/50@2R",197,-0.195,-38.5
+2023,"small candles, extreme 50@1R/50@2R",243,-0.144,-35.0
+2024,"small candles, extreme 50@1R/50@2R",232,-0.131,-30.427
+2025,"small candles, extreme 50@1R/50@2R",257,-0.059,-15.12
+2026,"small candles, extreme 50@1R/50@2R",73,-0.247,-18.0
