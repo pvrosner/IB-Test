@@ -1,0 +1,7 @@
+opp_swept_first,pen_b,n,win,avg_R
+False,shallow,994,0.441,0.013
+False,mid,866,0.421,-0.031
+False,deep,877,0.426,-0.019
+True,shallow,296,0.432,-0.005
+True,mid,256,0.406,-0.066
+True,deep,299,0.348,-0.2

@@ -1,0 +1,7 @@
+edge_on_b,opp_swept_first,n,win,avg_R
+inside ON,False,1905,0.433,-0.004
+inside ON,True,641,0.388,-0.107
+at ON extreme,False,292,0.384,-0.118
+at ON extreme,True,101,0.386,-0.112
+beyond ON,False,540,0.444,0.022
+beyond ON,True,109,0.44,0.013

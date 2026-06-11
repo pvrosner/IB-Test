@@ -1,0 +1,7 @@
+break_with_candle,rel_range_b,n,win,avg_R
+False,small,528,0.386,-0.111
+False,mid,477,0.403,-0.074
+False,large,391,0.419,-0.035
+True,small,659,0.454,0.044
+True,mid,709,0.408,-0.062
+True,large,796,0.443,0.02

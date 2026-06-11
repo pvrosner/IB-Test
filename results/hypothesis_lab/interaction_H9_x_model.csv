@@ -1,0 +1,7 @@
+vol_b,model,n,win,avg_R
+low,failure,248,0.379,-0.128
+low,retest,479,0.424,-0.025
+mid,failure,288,0.448,0.03
+mid,retest,439,0.392,-0.099
+high,failure,228,0.465,0.069
+high,retest,499,0.399,-0.083
