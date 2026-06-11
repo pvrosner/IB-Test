@@ -247,6 +247,27 @@ with breakeven after the first leg.
 
 Full study: [`results/hourly_range_variants/REPORT.md`](results/hourly_range_variants/REPORT.md).
 
+### Candle character: predicting reversion to equilibrium
+
+`run_candle_character.py` conditions post-break behavior of the 6am/7am
+candles on the candle's own character (relative range vs trailing same-hour
+median, body/range, close position, expansion vs prior hour), plus a
+candle-type Markov transition matrix.
+
+- **Hypothesis confirmed in raw terms**: consolidation candles revert to their
+  midpoint after a break 81% of the time vs 62% for expansion candles. The
+  effect is driven almost entirely by **relative range** (size), not body
+  shape or close position — small candles revert, big candles don't.
+- Normalization caveat: in range units, small candles do *everything* more
+  (they also extend ≥1R more often, 63% vs 33%). The race metric — mid before
+  a 0.5R extension — shows a modest 52% vs 48% edge. The raw 81% number is the
+  relevant one for fades targeting the mid in points.
+- Candle types are sticky (consolidation→consolidation 40%, expansion→expansion
+  24–29% vs ~19% base), but the prior hour adds **no** predictive power once
+  the current candle's type is known — a first-order analysis is sufficient.
+
+Full study: [`results/candle_character/REPORT.md`](results/candle_character/REPORT.md).
+
 ## Layout
 
 ```
