@@ -224,6 +224,29 @@ line. Requiring a real sweep flips the failure model positive:
 
 Full sweep: [`results/hourly_range_sweep/REPORT.md`](results/hourly_range_sweep/REPORT.md).
 
+### Stop / target / partial variants
+
+`run_hourly_range_variants.py` runs 17 exit structures on identical setups:
+structural stops (break extreme), projection stops (25%/50% of range past the
+level), opposite-end targets, and 50/50 partials at quadrants and R-multiples
+with breakeven after the first leg.
+
+- **Stop behind the extreme is only viable when the sweep is deep.** Unfiltered
+  failure setups with extreme stops are the worst cells tested (−0.29 to
+  −0.38R) — shallow wicks make tick-sized stops. With the pen ≥ 0.5 ATR filter
+  the same stop becomes the most stable performer.
+- Best filtered cells (7am failure, n=141): **proj25 stop → opposite-end target
+  +0.21R (PF 1.27, 24% win)**; **extreme stop, 50% @ 1R / 50% @ 2R with BE:
+  +0.16R at 58% win rate, median +0.5R, PF 1.37** — the latter is positive 5 of
+  6 years and has the smoothest profile.
+- Unfiltered surprise: 6am retest with extreme stop targeting the opposite end
+  earns +0.10R on n=1,276 (21% win) — a lottery-ticket profile with the largest
+  total R (+126R) in the study.
+- Projection stops: 25% of range is the sweet spot; 50% is too wide and
+  dilutes every config.
+
+Full study: [`results/hourly_range_variants/REPORT.md`](results/hourly_range_variants/REPORT.md).
+
 ## Layout
 
 ```

@@ -1,0 +1,25 @@
+year,cell,count,mean,sum
+2021,7am/failure/proj25->opp,34,0.029,1.0
+2022,7am/failure/proj25->opp,17,0.471,8.0
+2023,7am/failure/proj25->opp,23,0.087,2.0
+2024,7am/failure/proj25->opp,27,1.037,28.0
+2025,7am/failure/proj25->opp,36,-0.583,-21.0
+2026,7am/failure/proj25->opp,4,2.75,11.0
+2021,7am/failure/proj25 50@mid/50@opp,34,0.118,4.0
+2022,7am/failure/proj25 50@mid/50@opp,17,0.529,9.0
+2023,7am/failure/proj25 50@mid/50@opp,23,0.13,3.0
+2024,7am/failure/proj25 50@mid/50@opp,27,0.63,17.0
+2025,7am/failure/proj25 50@mid/50@opp,36,-0.444,-16.0
+2026,7am/failure/proj25 50@mid/50@opp,4,1.5,6.0
+2021,7am/failure/extreme 50@1R/50@2R,34,-0.059,-2.0
+2022,7am/failure/extreme 50@1R/50@2R,17,0.441,7.5
+2023,7am/failure/extreme 50@1R/50@2R,23,0.152,3.5
+2024,7am/failure/extreme 50@1R/50@2R,27,0.13,3.5
+2025,7am/failure/extreme 50@1R/50@2R,36,0.194,7.0
+2026,7am/failure/extreme 50@1R/50@2R,4,0.625,2.5
+2021,7am/failure/rr1.3->opp,34,0.015,0.5
+2022,7am/failure/rr1.3->opp,17,0.353,6.0
+2023,7am/failure/rr1.3->opp,23,-0.079,-1.811
+2024,7am/failure/rr1.3->opp,27,0.448,12.1
+2025,7am/failure/rr1.3->opp,36,-0.042,-1.5
+2026,7am/failure/rr1.3->opp,4,0.725,2.9
