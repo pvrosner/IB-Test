@@ -206,6 +206,24 @@ fills over 5 years.
 
 Full study: [`results/hourly_range_1m/REPORT.md`](results/hourly_range_1m/REPORT.md).
 
+### Break-quality filters and equilibrium-zone targets
+
+`run_hourly_range_sweep.py` adds penetration/displacement filters on the break
+and a zone target forward of the exact midpoint. Median penetration past the
+level is only **3.75 pts** (25th pct: 1.5 pts) — most breaks barely clear the
+line. Requiring a real sweep flips the failure model positive:
+
+- **7am failure + penetration ≥ 0.5 ATR: +0.09R, PF 1.18 (n=141)**, positive 5
+  of 6 years; 6am equivalent +0.05–0.08R. Deeper fixed-point filters do better
+  still (+0.15R, PF 1.30) but on thin samples (n≈58).
+- Displacement ≥ 1.5 lifts the 7am retest model from −0.004R to **+0.023R
+  (n=715)** — the largest-sample positive cell.
+- The equilibrium zone (target 5–10% of range short of the mid) is roughly
+  neutral: it trims a little from winners and saves a few near-misses; 5% is
+  harmless, 10% gives up too much.
+
+Full sweep: [`results/hourly_range_sweep/REPORT.md`](results/hourly_range_sweep/REPORT.md).
+
 ## Layout
 
 ```

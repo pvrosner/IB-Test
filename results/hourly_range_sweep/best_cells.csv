@@ -1,0 +1,13 @@
+range,model,zone,filter,mgmt,n,win_rate,avg_R,total_R,profit_factor
+7am,failure,0.0,pen>=5pts,fixed,58,0.5,0.15,8.7,1.3
+7am,failure,0.05,pen>=5pts,fixed,55,0.491,0.129,7.1,1.254
+7am,failure,0.0,pen>=0.5atr,fixed,141,0.475,0.093,13.1,1.177
+6am,failure,0.05,pen>=0.5atr,fixed,138,0.471,0.083,11.5,1.158
+6am,failure,0.0,pen>=0.5atr,fixed,142,0.458,0.053,7.5,1.097
+7am,retest,0.0,disp>=1.5,fixed,715,0.445,0.023,16.4,1.041
+7am,failure,0.1,pen>=5pts,fixed,54,0.444,0.022,1.2,1.04
+7am,failure,0.0,disp>=1.5,fixed,233,0.438,0.007,1.6,1.012
+6am,failure,0.05,disp>=1.5,fixed,260,0.435,-0.0,-0.1,0.999
+7am,retest,0.05,disp>=1.5,fixed,700,0.434,-0.001,-0.8,0.998
+7am,failure,0.05,pen>=0.5atr,fixed,136,0.434,-0.002,-0.3,0.996
+7am,retest,0.0,none,fixed,984,0.433,-0.004,-4.2,0.992
