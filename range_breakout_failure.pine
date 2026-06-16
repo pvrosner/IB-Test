@@ -11,9 +11,9 @@
 // - Projection boxes outside the range (two levels, color/style per level)
 // - Quadrant lines (25/50/75) or midpoint-only, with forward extension;
 //   the extended portion is dotted
-// - Forward extension is cut off at a configurable trading-day-end time
-//   (default 16:59 in the session timezone) so it does not overshoot on
-//   higher timeframes; toggle off to use a fixed bar count instead
+// - Forward extension is a per-range fixed number of MINUTES (timeframe
+//   independent), so Asian / London / RTH ranges each extend their own
+//   amount instead of all running to a single day-end time
 
 //@version=6
 indicator('Range Breakout Failure [Multi-Session]', 'RBF Sessions', overlay = true, max_lines_count = 500, max_boxes_count = 500, max_labels_count = 500)
@@ -55,18 +55,23 @@ GQ = 'QUADRANTS'
 tzInput        = input.string('America/New_York', 'Session Timezone', group = G0,
      tooltip = 'All range times below are interpreted in this timezone.')
 
+extTip = 'Forward extension for this range, in minutes (timeframe independent). 0 = no forward extension.'
 r1On   = input.bool(true,        '', group = G1, inline = 'r1')
 r1Sess = input.session('0600-0700', '', group = G1, inline = 'r1')
 r1Col  = input.color(#2962FF,    '', group = G1, inline = 'r1')
+r1Ext  = input.int(120, 'Extend Forward (minutes)', group = G1, minval = 0, tooltip = extTip)
 r2On   = input.bool(true,        '', group = G2, inline = 'r2')
 r2Sess = input.session('0700-0800', '', group = G2, inline = 'r2')
 r2Col  = input.color(#089981,    '', group = G2, inline = 'r2')
+r2Ext  = input.int(120, 'Extend Forward (minutes)', group = G2, minval = 0, tooltip = extTip)
 r3On   = input.bool(false,       '', group = G3, inline = 'r3')
 r3Sess = input.session('0930-1030', '', group = G3, inline = 'r3')
 r3Col  = input.color(#FF9800,    '', group = G3, inline = 'r3')
+r3Ext  = input.int(330, 'Extend Forward (minutes)', group = G3, minval = 0, tooltip = extTip)
 r4On   = input.bool(false,       '', group = G4, inline = 'r4')
 r4Sess = input.session('1500-1600', '', group = G4, inline = 'r4')
 r4Col  = input.color(#9C27B0,    '', group = G4, inline = 'r4')
+r4Ext  = input.int(60, 'Extend Forward (minutes)', group = G4, minval = 0, tooltip = extTip)
 
 entryModeInput = input.string(ENTRY_CLOSE, 'Entry Trigger', group = GL, options = [ENTRY_CLOSE, ENTRY_RETEST],
      tooltip = 'Close back inside: signal fires on the candle that closes back inside the range. Retest: after the close back inside, wait for price to trade back to the broken level.')
@@ -81,7 +86,7 @@ rrInput        = input.float(1.3,  'Reward : Risk (fixed-R mode)', group = GT, m
 stopProjInput  = input.float(25,   'Stop Projection % (projection mode)', group = GT, minval = 5, step = 5,
      tooltip = 'Stop placed this % of the range height beyond the broken level.')
 showTradeInput = input.bool(true,  'Show Entry/Stop/Target Lines', group = GT)
-tradeLenInput  = input.int(20,     'Trade Line Length (bars)', group = GT, minval = 3)
+tradeLenInput  = input.int(60,     'Trade Line Length (minutes)', group = GT, minval = 1)
 entColInput    = input.color(#2962FF, 'Entry', group = GT, inline = 'tc')
 stpColInput    = input.color(#F23645, 'Stop',  group = GT, inline = 'tc')
 tgtColInput    = input.color(#089981, 'Target', group = GT, inline = 'tc')
@@ -95,27 +100,15 @@ p2PctInput   = input.float(50,      'Projection 2 %', group = GP, inline = 'p2',
 p2ColInput   = input.color(color.new(#FF9800, 70), '', group = GP, inline = 'p2')
 p2StyInput   = input.string(DASHED, '', group = GP, inline = 'p2', options = [SOLID, DASHED, DOTTED])
 
-quadModeInput  = input.string(QUAD_FULL, 'Levels', group = GQ, options = [QUAD_FULL, QUAD_MID, QUAD_OFF])
-cutoffEodInput = input.bool(true, 'Cut Off Extension At Trading Day End', group = GQ,
-     tooltip = 'When on, range lines, projection boxes and trade levels stop at the day-end time below (independent of timeframe). When off, they extend the fixed bar count instead.')
-eodHourInput   = input.int(16,  'Day End Hour (0-23)', group = GQ, inline = 'eod', minval = 0, maxval = 23)
-eodMinInput    = input.int(59,  ': Minute', group = GQ, inline = 'eod', minval = 0, maxval = 59,
-     tooltip = 'Interpreted in the Session Timezone. Default 16:59 = 4:59pm.')
-quadExtInput   = input.int(20,  'Extend Lines Forward (bars)', group = GQ, minval = 0,
-     tooltip = 'Used only when "Cut Off Extension At Trading Day End" is off. The portion extending beyond the range box is drawn dotted. Projection boxes share this extension.')
+quadModeInput  = input.string(QUAD_FULL, 'Levels', group = GQ, options = [QUAD_FULL, QUAD_MID, QUAD_OFF],
+     tooltip = 'Forward extension distance is set per range (in minutes) under each RANGE group.')
 quadColInput   = input.color(color.new(color.gray, 30), 'Line Color', group = GQ, inline = 'q')
 quadWInput     = input.int(1,   'Width', group = GQ, inline = 'q', minval = 1, maxval = 3)
 
 //---------------------------------------------------------------------------------------------------------------------
 // HELPERS
 //---------------------------------------------------------------------------------------------------------------------
-f_barMs() => timeframe.in_seconds(timeframe.period) * 1000
-
-// timestamp of the day-end cutoff on the current bar's calendar day (session tz);
-// if that moment is already past on this bar, roll to the next day
-f_eod() =>
-    int t = timestamp(tzInput, year(time, tzInput), month(time, tzInput), dayofmonth(time, tzInput), eodHourInput, eodMinInput)
-    t <= time ? t + 86400000 : t
+MS_PER_MIN = 60000
 
 f_lineStyle(string s) =>
     switch s
@@ -143,8 +136,7 @@ f_drawTrade(float d, float entry, float hi, float lo, color col) =>
     float tp = f_targetPx(d, hi, lo)
     float sp = f_stopPx(d, entry, tp, hi, lo)
     if showTradeInput
-        int raw = time + tradeLenInput * f_barMs()
-        int xt  = math.max(cutoffEodInput ? math.min(raw, f_eod()) : raw, time + f_barMs())
+        int xt = time + tradeLenInput * MS_PER_MIN
         line.new(time, entry, xt, entry, xloc.bar_time, color = entColInput, width = 2)
         line.new(time, sp,    xt, sp,    xloc.bar_time, color = stpColInput, width = 2)
         line.new(time, tp,    xt, tp,    xloc.bar_time, color = tgtColInput, width = 2)
@@ -182,7 +174,7 @@ f_drawLevels(float hi, float lo, int t1, int t2, int te, color col) =>
 // RANGE ENGINE (one instance per session input)
 //---------------------------------------------------------------------------------------------------------------------
 // Side states: 0 idle, 1 closed outside, 2 armed for retest, 3 done
-f_range(bool en, string sess, color col) =>
+f_range(bool en, string sess, color col, int extMin) =>
     var float hi = na
     var float lo = na
     var int   startBar = na
@@ -223,8 +215,7 @@ f_range(bool en, string sess, color col) =>
         monitoring := true
         endBar := bar_index - 1
         endTime := time[1]
-        int teRaw = endTime + quadExtInput * f_barMs()
-        int te = math.max(cutoffEodInput ? f_eod() : teRaw, endTime + f_barMs())
+        int te = endTime + extMin * MS_PER_MIN
         f_drawLevels(hi, lo, startTime, endTime, te, col)
 
     if monitoring and not building and not na(hi)
@@ -281,10 +272,10 @@ f_range(bool en, string sess, color col) =>
 //---------------------------------------------------------------------------------------------------------------------
 // EXECUTION
 //---------------------------------------------------------------------------------------------------------------------
-[s1, l1] = f_range(r1On, r1Sess, r1Col)
-[s2, l2] = f_range(r2On, r2Sess, r2Col)
-[s3, l3] = f_range(r3On, r3Sess, r3Col)
-[s4, l4] = f_range(r4On, r4Sess, r4Col)
+[s1, l1] = f_range(r1On, r1Sess, r1Col, r1Ext)
+[s2, l2] = f_range(r2On, r2Sess, r2Col, r2Ext)
+[s3, l3] = f_range(r3On, r3Sess, r3Col, r3Ext)
+[s4, l4] = f_range(r4On, r4Sess, r4Col, r4Ext)
 
 bool anyShort = s1 or s2 or s3 or s4
 bool anyLong  = l1 or l2 or l3 or l4
